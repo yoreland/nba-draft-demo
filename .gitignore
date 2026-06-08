@@ -7,3 +7,4 @@ output/
 .eggs/
 dist/
 build/
+data/scrape_cache.json

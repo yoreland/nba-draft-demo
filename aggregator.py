@@ -76,7 +76,11 @@ def fuzzy_match(name1: str, name2: str) -> bool:
             if parts1[0] == parts2[0] or _similarity_ratio(parts1[0], parts2[0]) > 0.7:
                 return True
 
-    # Simple edit distance ratio - must be very high for short names
+    # Simple edit distance ratio - must be very high for short names.
+    # NOTE: The custom _similarity_ratio uses character-set overlap, not edit distance.
+    # This can produce false positives on names with high character overlap but different
+    # meaning (e.g., "Cameron Carr" vs "Cameron Carter"). For the 30-player scale of a
+    # single draft class this is acceptable, but would need a stricter metric at scale.
     ratio = _similarity_ratio(n1, n2)
     min_len = min(len(n1), len(n2))
     threshold = 0.92 if min_len < 12 else 0.87
@@ -189,6 +193,22 @@ def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
             # Score reflects how strong the consensus is (higher = better agreement)
             score = total_weight / len(preds)
             consensus.append((key, consensus_pick, score))
+
+    # Minimum-source warning: if fewer than 2 sources contributed, confidence is degraded
+    MIN_SOURCES = 2
+    if len(sources_used) < MIN_SOURCES:
+        logger.warning(
+            f"Only {len(sources_used)} source(s) contributed predictions. "
+            f"Consensus confidence is degraded (minimum {MIN_SOURCES} recommended)."
+        )
+        print(
+            f"\n⚠ WARNING: Only {len(sources_used)} source(s) contributed. "
+            f"Consensus confidence is degraded."
+        )
+        # Penalize consensus scores when source diversity is low
+        consensus = [
+            (key, pick, score * 0.6) for key, pick, score in consensus
+        ]
 
     # Sort by consensus pick position
     consensus.sort(key=lambda x: x[1])
