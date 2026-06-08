@@ -37,5 +37,5 @@
     "cd /projects/sandbox/nba-draft-demo && python main.py --mode predict"
   ],
   "blocked_reason": null,
-  "findings": "All 29 tests pass. Backtest shows 33.3% exact match, 76.7% within-3-picks, 0.8529 Kendall tau. Predict mode successfully scrapes 3/4 sources (ESPN requires auth/paywall). Fallback data is available if all scrapers fail. Unicode name normalization handles accent variations."
+  "findings": "All 29 tests pass. Backtest shows 33.3% exact match, 76.7% within-3-picks, 0.8529 Kendall tau. Predict mode successfully scrapes 3/4 sources (ESPN requires auth/paywall). Fallback data is available if all scrapers fail. Unicode name normalization handles accent variations. Review improvements applied: min-source warning with 0.6x score penalty, AJ Dybantsa as #1 in fallback, scrape caching to data/scrape_cache.json, backtest dates spread across Apr-Jun 2024 for meaningful time decay."
 }
