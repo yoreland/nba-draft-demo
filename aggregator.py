@@ -1,0 +1,211 @@
+"""Weighted Consensus Aggregation Engine for NBA Draft predictions."""
+
+import math
+import logging
+from datetime import datetime
+from typing import List, Dict, Tuple
+from collections import defaultdict
+
+from models import PlayerPrediction, DraftBoard, DraftPick
+from config import SOURCE_WEIGHTS, TIME_DECAY_LAMBDA, CURRENT_DATE, TOP_PICKS
+
+logger = logging.getLogger(__name__)
+
+
+def normalize_name(name: str) -> str:
+    """Normalize a player name for matching across sources.
+
+    Handles common variations:
+    - Case differences
+    - Jr./Sr./III suffixes
+    - Extra whitespace
+    - Unicode accents
+    - Common nickname variations
+    """
+    if not name:
+        return ""
+
+    # Lowercase and strip
+    n = name.lower().strip()
+
+    # Remove/normalize unicode accents
+    import unicodedata
+    n = unicodedata.normalize("NFKD", n)
+    n = "".join(c for c in n if not unicodedata.combining(c))
+
+    # Remove common suffixes
+    for suffix in [" jr.", " jr", " sr.", " sr", " iii", " ii", " iv"]:
+        if n.endswith(suffix):
+            n = n[: -len(suffix)]
+
+    # Remove punctuation
+    n = n.replace(".", "").replace("'", "").replace("-", " ")
+
+    # Collapse whitespace
+    n = " ".join(n.split())
+
+    return n
+
+
+def fuzzy_match(name1: str, name2: str) -> bool:
+    """Check if two player names likely refer to the same person.
+
+    Uses normalized names and simple character-level similarity.
+    """
+    n1 = normalize_name(name1)
+    n2 = normalize_name(name2)
+
+    # Exact match after normalization
+    if n1 == n2:
+        return True
+
+    # Must have at least 2 parts to do substring/initial matching
+    parts1 = n1.split()
+    parts2 = n2.split()
+
+    # One contains the other (but only if the contained string is substantial)
+    if len(n1) > 5 and len(n2) > 5:
+        if n1 in n2 or n2 in n1:
+            return True
+
+    # Check last name match + first name match or initial
+    if len(parts1) >= 2 and len(parts2) >= 2:
+        # Same last name and same first name or first initial
+        if parts1[-1] == parts2[-1] and parts1[0][0] == parts2[0][0]:
+            # Additional check: first names must be similar, not just same initial
+            if parts1[0] == parts2[0] or _similarity_ratio(parts1[0], parts2[0]) > 0.7:
+                return True
+
+    # Simple edit distance ratio - must be very high for short names
+    ratio = _similarity_ratio(n1, n2)
+    min_len = min(len(n1), len(n2))
+    threshold = 0.92 if min_len < 12 else 0.87
+    return ratio > threshold
+
+
+def _similarity_ratio(s1: str, s2: str) -> float:
+    """Calculate similarity ratio between two strings (0-1)."""
+    if not s1 or not s2:
+        return 0.0
+    if s1 == s2:
+        return 1.0
+
+    # Use length of matching characters / average length
+    len1, len2 = len(s1), len(s2)
+    max_len = max(len1, len2)
+
+    # Count matching characters at same positions
+    matches = sum(1 for a, b in zip(s1, s2) if a == b)
+
+    # Also count characters present in both strings
+    set1, set2 = set(s1), set(s2)
+    common_chars = len(set1 & set2)
+
+    score = (matches / max_len * 0.6) + (common_chars / len(set1 | set2) * 0.4)
+    return score
+
+
+def calculate_time_decay(date_str: str) -> float:
+    """Calculate time decay factor for a prediction date.
+
+    More recent predictions get higher weight.
+    """
+    if not date_str:
+        return 0.5  # default for unknown dates
+
+    try:
+        pred_date = datetime.strptime(date_str, "%Y-%m-%d")
+        days_old = (CURRENT_DATE - pred_date).days
+        if days_old < 0:
+            days_old = 0
+        decay = math.exp(-TIME_DECAY_LAMBDA * days_old)
+        return max(decay, 0.1)  # minimum 10% weight
+    except ValueError:
+        return 0.5
+
+
+def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
+    """Aggregate predictions from multiple sources into a consensus draft board.
+
+    Algorithm:
+    1. Group predictions by normalized player name
+    2. For each player, calculate weighted consensus pick position:
+       weighted_pick = sum(pick * source_weight * time_decay * confidence) / sum(weights)
+    3. Sort by consensus pick position
+    4. Return top N picks as DraftBoard
+    """
+    if not predictions:
+        logger.warning("No predictions to aggregate")
+        return DraftBoard(mode="predict")
+
+    # Group predictions by normalized player name
+    player_groups: Dict[str, List[PlayerPrediction]] = defaultdict(list)
+    canonical_names: Dict[str, str] = {}  # normalized -> best display name
+    player_info: Dict[str, Dict] = {}  # normalized -> {position, school}
+
+    for pred in predictions:
+        norm = normalize_name(pred.name)
+
+        # Check if this matches an existing group
+        matched_key = None
+        for existing_key in list(player_groups.keys()):
+            if fuzzy_match(norm, existing_key):
+                matched_key = existing_key
+                break
+
+        key = matched_key if matched_key else norm
+        player_groups[key].append(pred)
+
+        # Keep the most complete name as canonical
+        if key not in canonical_names or len(pred.name) > len(canonical_names[key]):
+            canonical_names[key] = pred.name
+
+        # Keep position/school info
+        if key not in player_info:
+            player_info[key] = {"position": "", "school": ""}
+        if pred.position:
+            player_info[key]["position"] = pred.position
+        if pred.school:
+            player_info[key]["school"] = pred.school
+
+    # Calculate weighted consensus for each player
+    consensus: List[Tuple[str, float, float]] = []  # (key, weighted_pick, score)
+    sources_used = set()
+
+    for key, preds in player_groups.items():
+        total_weight = 0.0
+        weighted_pick_sum = 0.0
+
+        for pred in preds:
+            source_weight = SOURCE_WEIGHTS.get(pred.source, 0.5)
+            time_decay = calculate_time_decay(pred.date)
+            weight = source_weight * time_decay * pred.confidence
+            weighted_pick_sum += pred.projected_pick * weight
+            total_weight += weight
+            sources_used.add(pred.source)
+
+        if total_weight > 0:
+            consensus_pick = weighted_pick_sum / total_weight
+            # Score reflects how strong the consensus is (higher = better agreement)
+            score = total_weight / len(preds)
+            consensus.append((key, consensus_pick, score))
+
+    # Sort by consensus pick position
+    consensus.sort(key=lambda x: x[1])
+
+    # Build draft board
+    board = DraftBoard(mode="predict", sources_used=sorted(sources_used))
+
+    for i, (key, consensus_pick, score) in enumerate(consensus[:TOP_PICKS], start=1):
+        info = player_info.get(key, {})
+        board.add_pick(
+            DraftPick(
+                pick_number=i,
+                player_name=canonical_names.get(key, key),
+                position=info.get("position", ""),
+                school=info.get("school", ""),
+                consensus_score=round(score, 4),
+            )
+        )
+
+    return board

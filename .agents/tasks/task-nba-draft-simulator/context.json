@@ -1,0 +1,26 @@
+{
+  "project_type": "Python CLI application - NBA Draft prediction simulator",
+  "language": "Python 3.11",
+  "build_system": "pip with requirements.txt, no build step needed",
+  "test_framework": "pytest",
+  "build_command": "pip install -r requirements.txt",
+  "test_command": "cd /projects/sandbox/nba-draft-demo && python -m pytest tests/ -v",
+  "verification_instructions": "1. pip install -r requirements.txt\n2. python -m pytest tests/ -v\n3. python main.py --mode backtest\n4. python main.py --mode predict",
+  "snapshot_or_generated_files": "output/ directory contains JSON prediction results, not checked in",
+  "setup_instructions": "pyenv global 3.11.15 && pip install -r requirements.txt",
+  "environment_constraints": "OPEN_INTERNET - full network access, can scrape websites. Python 3.11.15 via pyenv. uv/pip/pytest/ruff available.",
+  "contribution_requirements": "Greenfield project, no existing conventions",
+  "key_patterns": "Single-file-per-module Python app. JSON for data storage. requests + beautifulsoup4 for scraping. Weighted consensus algorithm for aggregation.",
+  "relevant_files": [
+    "main.py - entry point",
+    "scrapers/ - web scraping modules per source",
+    "aggregator.py - weighted consensus engine",
+    "models.py - data models",
+    "backtest.py - historical validation",
+    "config.py - weights and settings",
+    "data/ - cached/historical JSON data",
+    "output/ - prediction results",
+    "tests/ - pytest tests"
+  ],
+  "directory_structure": "/projects/sandbox/nba-draft-demo/ - project root\n  main.py - CLI entry point\n  config.py - configuration and weights\n  models.py - data classes\n  aggregator.py - consensus engine\n  backtest.py - validation against 2024 data\n  scrapers/ - one module per source\n  data/ - historical/cached data (JSON)\n  output/ - generated predictions\n  tests/ - pytest test suite"
+}
