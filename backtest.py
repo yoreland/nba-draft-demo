@@ -165,10 +165,10 @@ def get_2024_mock_predictions() -> List[PlayerPrediction]:
     all_predictions = []
 
     source_data = [
-        ("espn", espn_predictions, 0.9, "2024-06-15"),
+        ("espn", espn_predictions, 0.9, "2024-05-15"),
         ("tankathon", tankathon_predictions, 0.85, "2024-06-20"),
-        ("nbadraft_net", nbadraft_predictions, 0.8, "2024-06-10"),
-        ("betting_odds", odds_predictions, 0.95, "2024-06-22"),
+        ("nbadraft_net", nbadraft_predictions, 0.8, "2024-04-01"),
+        ("betting_odds", odds_predictions, 0.95, "2024-06-25"),
     ]
 
     for source, preds, confidence, date in source_data:

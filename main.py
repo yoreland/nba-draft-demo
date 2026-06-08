@@ -15,7 +15,7 @@ from config import OUTPUT_DIR
 from models import DraftBoard
 from aggregator import aggregate_predictions
 from backtest import run_backtest
-from scrapers import scrape_all_sources
+from scrapers import scrape_all_sources, load_cached_predictions
 
 # Configure logging
 logging.basicConfig(
@@ -40,8 +40,13 @@ def run_predict():
     if not predictions:
         print("\nWARNING: No predictions could be scraped from any source.")
         print("This may happen if all sources are blocking requests.")
-        print("Using fallback data for demonstration...")
-        predictions = _get_fallback_2026_predictions()
+        # Try loading cached data from last successful scrape
+        predictions = load_cached_predictions()
+        if predictions:
+            print("Using cached data from last successful scrape...")
+        else:
+            print("No cache available. Using static fallback data for demonstration...")
+            predictions = _get_fallback_2026_predictions()
 
     print(f"\nTotal predictions collected: {len(predictions)}")
 
@@ -100,16 +105,17 @@ def _get_fallback_2026_predictions():
     """Provide fallback 2026 mock draft data when scraping fails.
 
     Based on current 2026 NBA Draft prospect consensus.
+    This is a static fallback; prefer cached scrape data if available (see data/scrape_cache.json).
     """
     from models import PlayerPrediction
     from datetime import datetime
 
     today = datetime.now().strftime("%Y-%m-%d")
 
-    # Current consensus top 2026 prospects
+    # Current consensus top 2026 prospects (updated to reflect latest mock drafts)
     fallback = [
-        ("Cooper Flagg", 1, "SF", "Duke", "espn"),
-        ("Airious Bailey", 2, "SG", "Alabama", "espn"),
+        ("AJ Dybantsa", 1, "SF", "BYU", "espn"),
+        ("Cooper Flagg", 2, "SF", "Duke", "espn"),
         ("Dylan Harper", 3, "SG", "Rutgers", "espn"),
         ("Ace Bailey", 4, "SF", "Rutgers", "espn"),
         ("VJ Edgecombe", 5, "SG", "Baylor", "espn"),
@@ -156,10 +162,10 @@ def _get_fallback_2026_predictions():
 
     # Add second source for top prospects to test aggregation
     top_from_odds = [
-        ("Cooper Flagg", 1, "SF", "Duke"),
-        ("Dylan Harper", 2, "SG", "Rutgers"),
-        ("Ace Bailey", 3, "SF", "Rutgers"),
-        ("Airious Bailey", 4, "SG", "Alabama"),
+        ("AJ Dybantsa", 1, "SF", "BYU"),
+        ("Cooper Flagg", 2, "SF", "Duke"),
+        ("Dylan Harper", 3, "SG", "Rutgers"),
+        ("Ace Bailey", 4, "SF", "Rutgers"),
         ("VJ Edgecombe", 5, "SG", "Baylor"),
         ("Tre Johnson", 6, "SG", "Texas"),
         ("Kasparas Jakucionis", 7, "PG", "Illinois"),
