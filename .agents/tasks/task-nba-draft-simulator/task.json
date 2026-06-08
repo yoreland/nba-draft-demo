@@ -1,0 +1,7 @@
+{
+  "task_id": "task-nba-draft-simulator",
+  "task_description": "Build a Python application that scrapes NBA Mock Draft data from multiple sources, aggregates predictions using weighted consensus, outputs a 2026 draft prediction, and validates accuracy via backtesting against 2024 actual draft results.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001"],
+  "blocked_reason": null
+}
