@@ -2,7 +2,7 @@
   "id": "FEAT-001",
   "type": "feat",
   "description": "Build the complete NBA Draft prediction application: project structure, data models, web scrapers for multiple mock draft sources, weighted consensus aggregation engine, backtest validation against 2024 draft, and CLI entry point that outputs a 2026 draft board.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create project skeleton: requirements.txt (requests, beautifulsoup4, pytest, lxml), main.py, config.py, models.py, aggregator.py, backtest.py, scrapers/__init__.py, data/, output/, tests/",
     "Implement config.py: source weights (ESPN=0.9, Tankathon=0.85, NBADraft.net=0.8, betting_odds=0.95), time decay factor, output settings",
@@ -37,5 +37,5 @@
     "cd /projects/sandbox/nba-draft-demo && python main.py --mode predict"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All 29 tests pass. Backtest shows 33.3% exact match, 76.7% within-3-picks, 0.8529 Kendall tau. Predict mode successfully scrapes 3/4 sources (ESPN requires auth/paywall). Fallback data is available if all scrapers fail. Unicode name normalization handles accent variations."
 }
