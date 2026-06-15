@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 NBA Draft Prediction Board</title>
+    <style>
+        :root {
+            --nba-blue: #1d428a;
+            --nba-red: #c8102e;
+            --nba-gold: #fdb927;
+            --dark-bg: #0a1628;
+            --card-bg: #152238;
+            --card-border: #1d3557;
+            --text-primary: #ffffff;
+            --text-secondary: #a8b8d0;
+            --text-muted: #6b7c93;
+            --lottery-gold: #fdb927;
+            --top3-glow: rgba(253, 185, 39, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--nba-blue) 0%, #0d2240 100%);
+            border-bottom: 3px solid var(--nba-red);
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center top, rgba(253, 185, 39, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, #c8d6e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: var(--nba-red);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.75rem;
+        }
+
+        .meta-bar {
+            background: rgba(21, 34, 56, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item strong {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid var(--nba-gold);
+        }
+
+        .draft-board {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .pick-card {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+
+        .pick-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--nba-blue);
+        }
+
+        .pick-card.top-3 {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(253, 185, 39, 0.05) 100%);
+            border-color: rgba(253, 185, 39, 0.3);
+        }
+
+        .pick-card.top-3:hover {
+            border-color: var(--nba-gold);
+            box-shadow: 0 4px 20px var(--top3-glow);
+        }
+
+        .pick-card.lottery {
+            border-left: 3px solid var(--nba-gold);
+        }
+
+        .pick-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .top-3 .pick-number {
+            color: var(--nba-gold);
+        }
+
+        .lottery .pick-number {
+            color: var(--lottery-gold);
+        }
+
+        .player-info {
+            padding: 0 1rem;
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.15rem;
+        }
+
+        .player-details {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .player-details .position {
+            display: inline-block;
+            background: rgba(29, 66, 138, 0.4);
+            color: #7eb3ff;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+
+        .consensus-score {
+            text-align: right;
+        }
+
+        .score-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .score-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .score-bar {
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 0.3rem;
+            margin-left: auto;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .score-high .score-bar-fill {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+
+        .score-mid .score-bar-fill {
+            background: linear-gradient(90deg, var(--nba-gold), #fde047);
+        }
+
+        .score-low .score-bar-fill {
+            background: linear-gradient(90deg, #f97316, #fb923c);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: var(--nba-gold);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(21, 34, 56, 0.5);
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .legend-dot.gold {
+            background: var(--nba-gold);
+        }
+
+        .legend-dot.blue {
+            background: var(--nba-blue);
+            border: 1px solid #3d6cb8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .pick-card {
+                grid-template-columns: 45px 1fr;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .consensus-score {
+                grid-column: 2;
+                text-align: left;
+                padding-left: 0;
+            }
+
+            .meta-bar {
+                gap: 1rem;
+            }
+
+            .legend {
+                gap: 1rem;
+            }
+
+            .score-bar {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>2026 NBA Draft Board</h1>
+        <p class="subtitle">Consensus Mock Draft Predictions</p>
+        <span class="badge">AI-Powered Aggregation</span>
+    </header>
+
+    <div class="meta-bar">
+        <span class="meta-item"><strong>Generated:</strong> <span id="gen-date">--</span></span>
+        <span class="meta-item"><strong>Sources:</strong> <span id="sources-list">--</span></span>
+        <span class="meta-item"><strong>Picks:</strong> <span id="pick-count">30</span></span>
+    </div>
+
+    <div class="container">
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot gold"></div>
+                <span>Lottery Pick (1-14)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot blue"></div>
+                <span>Non-Lottery (15-30)</span>
+            </div>
+        </div>
+
+        <div class="section-title">First Round - 30 Picks</div>
+
+        <div class="draft-board" id="draft-board">
+            <!-- Picks rendered by JavaScript -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Data aggregated from multiple mock draft sources using weighted consensus scoring.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://github.com/yoreland/nba-draft-demo">View Source on GitHub</a>
+        </p>
+        <p style="margin-top: 0.5rem;">Updated automatically via GitHub Actions. Predictions are for entertainment purposes only.</p>
+    </footer>
+
+    <script>
+        // Prediction data - auto-updated by CI pipeline
+        const PREDICTION_DATA = {"generated_at":"2026-06-08T11:33:37.771170","mode":"predict_2026","sources_used":["betting_odds","nbadraft_net","tankathon"],"picks":[{"pick_number":1,"player_name":"AJ Dybantsa","position":"SF","school":"BYU Cougars","consensus_score":0.6719},{"pick_number":2,"player_name":"Darryn Peterson","position":"SG/PG","school":"Kansas Jayhawks","consensus_score":0.5386},{"pick_number":3,"player_name":"Cameron Boozer","position":"PF","school":"Duke Blue Devils","consensus_score":0.4894},{"pick_number":4,"player_name":"Caleb Wilson","position":"SF/PF","school":"UNC Tar Heels","consensus_score":0.4858},{"pick_number":5,"player_name":"Darius Acuff Jr.","position":"PG","school":"Arkansas Razorbacks","consensus_score":0.4858},{"pick_number":6,"player_name":"Keaton Wagler","position":"SG/PG","school":"Illinois Fighting Illini","consensus_score":0.4858},{"pick_number":7,"player_name":"Kingston Flemings","position":"PG","school":"Houston Cougars","consensus_score":0.4858},{"pick_number":8,"player_name":"Mikel Brown Jr.","position":"PG","school":"Louisville Cardinals","consensus_score":0.4858},{"pick_number":9,"player_name":"Nate Ament","position":"SF","school":"Tennessee Volunteers","consensus_score":0.4858},{"pick_number":10,"player_name":"Brayden Burries","position":"SG/PG","school":"Arizona","consensus_score":0.6813},{"pick_number":11,"player_name":"Yaxel Lendeborg","position":"PF","school":"Michigan Wolverines","consensus_score":0.4858},{"pick_number":12,"player_name":"Labaron Philon Jr.","position":"PG","school":"Alabama","consensus_score":0.6813},{"pick_number":13,"player_name":"Karim Lopez","position":"SF","school":"New Zealand","consensus_score":0.6813},{"pick_number":14,"player_name":"Aday Mara","position":"C","school":"Michigan","consensus_score":0.6813},{"pick_number":15,"player_name":"Hannes Steinbach","position":"PF","school":"Washington","consensus_score":0.6813},{"pick_number":16,"player_name":"Cameron Carr","position":"SG","school":"Baylor","consensus_score":0.6813},{"pick_number":17,"player_name":"Chris Cenac Jr.","position":"PF/C","school":"Houston","consensus_score":0.6813},{"pick_number":18,"player_name":"Jayden Quaintance","position":"PF/C","school":"Kentucky Wildcats","consensus_score":0.4858},{"pick_number":19,"player_name":"Bennett Stirtz","position":"PG","school":"Iowa","consensus_score":0.6813},{"pick_number":20,"player_name":"Allen Graves","position":"PF","school":"Santa Clara","consensus_score":0.6813},{"pick_number":21,"player_name":"Dailyn Swain","position":"SG/SF","school":"Texas","consensus_score":0.6813},{"pick_number":22,"player_name":"Morez Johnson Jr.","position":"PF","school":"Michigan","consensus_score":0.6813},{"pick_number":23,"player_name":"Isaiah Evans","position":"SF","school":"Duke","consensus_score":0.6813},{"pick_number":24,"player_name":"Meleek Thomas","position":"SG/PG","school":"Arkansas","consensus_score":0.6813},{"pick_number":25,"player_name":"Christian Anderson","position":"PG","school":"Texas Tech","consensus_score":0.6813},{"pick_number":26,"player_name":"Luigi Suigo","position":"C","school":"Italy","consensus_score":0.64},{"pick_number":27,"player_name":"Koa Peat","position":"PF","school":"Arizona Wildcats","consensus_score":0.4858},{"pick_number":28,"player_name":"Ebuka Okorie","position":"PG","school":"Stanford","consensus_score":0.6813},{"pick_number":29,"player_name":"Henri Veesaar","position":"C","school":"North Carolina","consensus_score":0.6813},{"pick_number":30,"player_name":"Joshua Jefferson","position":"PF/SF","school":"Iowa State","consensus_score":0.6813}]};
+
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            });
+        }
+
+        function formatSourceName(source) {
+            const names = {
+                'betting_odds': 'Betting Odds',
+                'nbadraft_net': 'NBADraft.net',
+                'tankathon': 'Tankathon',
+                'espn': 'ESPN'
+            };
+            return names[source] || source;
+        }
+
+        function getScoreClass(score) {
+            if (score >= 0.65) return 'score-high';
+            if (score >= 0.5) return 'score-mid';
+            return 'score-low';
+        }
+
+        function renderDraftBoard(data) {
+            // Update metadata
+            document.getElementById('gen-date').textContent = formatDate(data.generated_at);
+            document.getElementById('sources-list').textContent = data.sources_used.map(formatSourceName).join(', ');
+            document.getElementById('pick-count').textContent = data.picks.length;
+
+            // Render picks
+            const board = document.getElementById('draft-board');
+            board.innerHTML = '';
+
+            data.picks.forEach(pick => {
+                const isTop3 = pick.pick_number <= 3;
+                const isLottery = pick.pick_number <= 14;
+                const scoreClass = getScoreClass(pick.consensus_score);
+                const scorePercent = Math.round(pick.consensus_score * 100);
+
+                let cardClass = 'pick-card';
+                if (isTop3) cardClass += ' top-3';
+                else if (isLottery) cardClass += ' lottery';
+
+                const card = document.createElement('div');
+                card.className = cardClass;
+                card.innerHTML = `
+                    <div class="pick-number">${pick.pick_number}</div>
+                    <div class="player-info">
+                        <div class="player-name">${pick.player_name}</div>
+                        <div class="player-details">
+                            <span class="position">${pick.position}</span>
+                            ${pick.school}
+                        </div>
+                    </div>
+                    <div class="consensus-score ${scoreClass}">
+                        <div class="score-value">${scorePercent}%</div>
+                        <div class="score-label">Consensus</div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: ${scorePercent}%"></div>
+                        </div>
+                    </div>
+                `;
+                board.appendChild(card);
+            });
+        }
+
+        // Try to fetch fresh data from prediction_2026.json, fall back to inline data
+        async function init() {
+            let data = PREDICTION_DATA;
+
+            try {
+                const response = await fetch('prediction_2026.json');
+                if (response.ok) {
+                    data = await response.json();
+                }
+            } catch (e) {
+                // Use inline data as fallback
+            }
+
+            renderDraftBoard(data);
+        }
+
+        init();
+    </script>
+</body>
+</html>

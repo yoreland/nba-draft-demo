@@ -1,0 +1,41 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Build the complete NBA Draft prediction application: project structure, data models, web scrapers for multiple mock draft sources, weighted consensus aggregation engine, backtest validation against 2024 draft, and CLI entry point that outputs a 2026 draft board.",
+  "status": "completed",
+  "steps": [
+    "Create project skeleton: requirements.txt (requests, beautifulsoup4, pytest, lxml), main.py, config.py, models.py, aggregator.py, backtest.py, scrapers/__init__.py, data/, output/, tests/",
+    "Implement config.py: source weights (ESPN=0.9, Tankathon=0.85, NBADraft.net=0.8, betting_odds=0.95), time decay factor, output settings",
+    "Implement models.py: PlayerPrediction dataclass (name, position, school/team, projected_pick, source, date, confidence), DraftBoard class with ranked list",
+    "Implement scrapers/nbadraft_net.py: scrape mock draft data from nbadraft.net using requests + BeautifulSoup. Parse player name, pick number, school. Handle connection errors gracefully.",
+    "Implement scrapers/tankathon.py: scrape tankathon.com mock draft. Parse player name, pick number, team, school.",
+    "Implement scrapers/espn.py: scrape ESPN mock draft page. Handle ESPN's structure to extract player rankings.",
+    "Implement scrapers/odds.py: scrape NBA draft betting odds from available odds sites (e.g. sportsbettingdime, covers.com). Parse implied probability from odds.",
+    "Implement scrapers/__init__.py: unified interface that runs all scrapers, handles failures gracefully (if one source fails, continue with others), returns list of PlayerPrediction objects",
+    "Implement aggregator.py: WeightedConsensusEngine that takes predictions from multiple sources, normalizes player names (fuzzy matching for slight variations), applies source weight * time_decay * confidence, calculates consensus pick position for each player, produces final ranked DraftBoard",
+    "Implement data/actual_2024_draft.json: historical data of actual 2024 NBA Draft results (top 30 picks) for backtesting",
+    "Implement backtest.py: load 2024 mock draft data (hardcoded historical predictions from known sources at that time), run through aggregation engine, compare against actual_2024_draft.json, calculate accuracy metrics (exact match %, within-3-picks %, Kendall tau correlation)",
+    "Implement main.py: CLI with argparse. --mode predict (default): run scrapers, aggregate, output 2026 prediction. --mode backtest: run 2024 validation. Print readable draft board to terminal with pick#, player name, position, school, consensus score. Save JSON to output/",
+    "Create tests/test_aggregator.py: test weighted consensus with known inputs, test name normalization, test time decay",
+    "Create tests/test_backtest.py: test that backtest runs and produces accuracy metrics",
+    "Create tests/test_models.py: test data model creation and serialization",
+    "Test the full application: run pytest, run main.py --mode backtest to verify it works end-to-end, run main.py --mode predict to verify scraping works (handle gracefully if some sites block)"
+  ],
+  "acceptance_criteria": [
+    "pip install -r requirements.txt succeeds",
+    "python -m pytest tests/ -v passes all tests",
+    "python main.py --mode backtest runs successfully and prints accuracy metrics for 2024 draft",
+    "python main.py --mode predict runs successfully, scrapes at least 1 source, and outputs a 30-pick draft board",
+    "Output JSON files are written to output/ directory",
+    "Terminal output shows a readable formatted draft board",
+    "Graceful error handling when a scraping source is unavailable"
+  ],
+  "verification": [
+    "cd /projects/sandbox/nba-draft-demo && pip install -r requirements.txt",
+    "cd /projects/sandbox/nba-draft-demo && python -m pytest tests/ -v",
+    "cd /projects/sandbox/nba-draft-demo && python main.py --mode backtest",
+    "cd /projects/sandbox/nba-draft-demo && python main.py --mode predict"
+  ],
+  "blocked_reason": null,
+  "findings": "All 29 tests pass. Backtest shows 33.3% exact match, 76.7% within-3-picks, 0.8529 Kendall tau. Predict mode successfully scrapes 3/4 sources (ESPN requires auth/paywall). Fallback data is available if all scrapers fail. Unicode name normalization handles accent variations. Review improvements applied: min-source warning with 0.6x score penalty, AJ Dybantsa as #1 in fallback, scrape caching to data/scrape_cache.json, backtest dates spread across Apr-Jun 2024 for meaningful time decay."
+}

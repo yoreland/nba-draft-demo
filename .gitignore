@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+output/
+*.egg-info/
+.eggs/
+dist/
+build/
+data/scrape_cache.json
