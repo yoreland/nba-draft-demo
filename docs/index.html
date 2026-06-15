@@ -129,7 +129,7 @@
 
         .pick-card {
             display: grid;
-            grid-template-columns: 60px 1fr auto;
+            grid-template-columns: 60px 45px 1fr auto;
             align-items: center;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -198,6 +198,31 @@
             font-weight: 600;
             font-size: 0.75rem;
             margin-right: 0.5rem;
+        }
+
+        .school-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--card-border);
+            display: block;
+        }
+
+        .school-logo-placeholder {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--nba-blue), #0d2240);
+            border: 2px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
         }
 
         .consensus-score {
@@ -301,13 +326,20 @@
             }
 
             .pick-card {
-                grid-template-columns: 45px 1fr;
+                grid-template-columns: 45px 36px 1fr;
                 gap: 0.5rem;
                 padding: 0.75rem 1rem;
             }
 
+            .school-logo,
+            .school-logo-placeholder {
+                width: 36px;
+                height: 36px;
+                font-size: 0.8rem;
+            }
+
             .consensus-score {
-                grid-column: 2;
+                grid-column: 2 / -1;
                 text-align: left;
                 padding-left: 0;
             }
@@ -370,6 +402,76 @@
         // Prediction data - auto-updated by CI pipeline
         const PREDICTION_DATA = {"generated_at":"2026-06-08T11:33:37.771170","mode":"predict_2026","sources_used":["betting_odds","nbadraft_net","tankathon"],"picks":[{"pick_number":1,"player_name":"AJ Dybantsa","position":"SF","school":"BYU Cougars","consensus_score":0.6719},{"pick_number":2,"player_name":"Darryn Peterson","position":"SG/PG","school":"Kansas Jayhawks","consensus_score":0.5386},{"pick_number":3,"player_name":"Cameron Boozer","position":"PF","school":"Duke Blue Devils","consensus_score":0.4894},{"pick_number":4,"player_name":"Caleb Wilson","position":"SF/PF","school":"UNC Tar Heels","consensus_score":0.4858},{"pick_number":5,"player_name":"Darius Acuff Jr.","position":"PG","school":"Arkansas Razorbacks","consensus_score":0.4858},{"pick_number":6,"player_name":"Keaton Wagler","position":"SG/PG","school":"Illinois Fighting Illini","consensus_score":0.4858},{"pick_number":7,"player_name":"Kingston Flemings","position":"PG","school":"Houston Cougars","consensus_score":0.4858},{"pick_number":8,"player_name":"Mikel Brown Jr.","position":"PG","school":"Louisville Cardinals","consensus_score":0.4858},{"pick_number":9,"player_name":"Nate Ament","position":"SF","school":"Tennessee Volunteers","consensus_score":0.4858},{"pick_number":10,"player_name":"Brayden Burries","position":"SG/PG","school":"Arizona","consensus_score":0.6813},{"pick_number":11,"player_name":"Yaxel Lendeborg","position":"PF","school":"Michigan Wolverines","consensus_score":0.4858},{"pick_number":12,"player_name":"Labaron Philon Jr.","position":"PG","school":"Alabama","consensus_score":0.6813},{"pick_number":13,"player_name":"Karim Lopez","position":"SF","school":"New Zealand","consensus_score":0.6813},{"pick_number":14,"player_name":"Aday Mara","position":"C","school":"Michigan","consensus_score":0.6813},{"pick_number":15,"player_name":"Hannes Steinbach","position":"PF","school":"Washington","consensus_score":0.6813},{"pick_number":16,"player_name":"Cameron Carr","position":"SG","school":"Baylor","consensus_score":0.6813},{"pick_number":17,"player_name":"Chris Cenac Jr.","position":"PF/C","school":"Houston","consensus_score":0.6813},{"pick_number":18,"player_name":"Jayden Quaintance","position":"PF/C","school":"Kentucky Wildcats","consensus_score":0.4858},{"pick_number":19,"player_name":"Bennett Stirtz","position":"PG","school":"Iowa","consensus_score":0.6813},{"pick_number":20,"player_name":"Allen Graves","position":"PF","school":"Santa Clara","consensus_score":0.6813},{"pick_number":21,"player_name":"Dailyn Swain","position":"SG/SF","school":"Texas","consensus_score":0.6813},{"pick_number":22,"player_name":"Morez Johnson Jr.","position":"PF","school":"Michigan","consensus_score":0.6813},{"pick_number":23,"player_name":"Isaiah Evans","position":"SF","school":"Duke","consensus_score":0.6813},{"pick_number":24,"player_name":"Meleek Thomas","position":"SG/PG","school":"Arkansas","consensus_score":0.6813},{"pick_number":25,"player_name":"Christian Anderson","position":"PG","school":"Texas Tech","consensus_score":0.6813},{"pick_number":26,"player_name":"Luigi Suigo","position":"C","school":"Italy","consensus_score":0.64},{"pick_number":27,"player_name":"Koa Peat","position":"PF","school":"Arizona Wildcats","consensus_score":0.4858},{"pick_number":28,"player_name":"Ebuka Okorie","position":"PG","school":"Stanford","consensus_score":0.6813},{"pick_number":29,"player_name":"Henri Veesaar","position":"C","school":"North Carolina","consensus_score":0.6813},{"pick_number":30,"player_name":"Joshua Jefferson","position":"PF/SF","school":"Iowa State","consensus_score":0.6813}]};
 
+        // School name to ESPN team ID mapping
+        const SCHOOL_ESPN_IDS = {
+            'BYU Cougars': 252,
+            'Kansas Jayhawks': 2305,
+            'Duke Blue Devils': 150,
+            'UNC Tar Heels': 153,
+            'North Carolina': 153,
+            'Arkansas Razorbacks': 8,
+            'Arkansas': 8,
+            'Illinois Fighting Illini': 356,
+            'Houston Cougars': 248,
+            'Houston': 248,
+            'Louisville Cardinals': 97,
+            'Tennessee Volunteers': 2633,
+            'Arizona': 12,
+            'Arizona Wildcats': 12,
+            'Michigan Wolverines': 130,
+            'Michigan': 130,
+            'Alabama': 333,
+            'Kentucky Wildcats': 96,
+            'Washington': 264,
+            'Baylor': 239,
+            'Iowa': 2294,
+            'Santa Clara': 2488,
+            'Texas': 251,
+            'Texas Tech': 2641,
+            'Stanford': 24,
+            'Iowa State': 66,
+            'Duke': 150,
+            'UConn': 41
+        };
+
+        function getSchoolLogoUrl(school) {
+            const teamId = SCHOOL_ESPN_IDS[school];
+            if (teamId) {
+                return `https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png`;
+            }
+            return null;
+        }
+
+        function getSchoolInitials(school) {
+            if (!school) return '?';
+            const words = school.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/);
+            if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+            return (words[0][0] + words[1][0]).toUpperCase();
+        }
+
+        function createLogoElement(school) {
+            const logoUrl = getSchoolLogoUrl(school);
+            if (logoUrl) {
+                const img = document.createElement('img');
+                img.className = 'school-logo';
+                img.src = logoUrl;
+                img.alt = school + ' logo';
+                img.loading = 'lazy';
+                img.onerror = function() {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'school-logo-placeholder';
+                    placeholder.textContent = getSchoolInitials(school);
+                    this.parentNode.replaceChild(placeholder, this);
+                };
+                return img;
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'school-logo-placeholder';
+                placeholder.textContent = getSchoolInitials(school);
+                return placeholder;
+            }
+        }
+
         function formatDate(isoString) {
             const date = new Date(isoString);
             return date.toLocaleDateString('en-US', {
@@ -422,6 +524,7 @@
                 card.className = cardClass;
                 card.innerHTML = `
                     <div class="pick-number">${pick.pick_number}</div>
+                    <div class="school-logo-container"></div>
                     <div class="player-info">
                         <div class="player-name">${pick.player_name}</div>
                         <div class="player-details">
@@ -437,6 +540,8 @@
                         </div>
                     </div>
                 `;
+                const logoContainer = card.querySelector('.school-logo-container');
+                logoContainer.replaceWith(createLogoElement(pick.school));
                 board.appendChild(card);
             });
         }
