@@ -1,0 +1,48 @@
+name: Update Draft Predictions
+
+on:
+  schedule:
+    # Run every Monday and Thursday at 08:00 UTC (twice per week)
+    - cron: '0 8 * * 1,4'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-predictions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run prediction scraper
+        run: python main.py --mode predict
+
+      - name: Update GitHub Pages data
+        run: cp output/prediction_2026.json docs/prediction_2026.json
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet output/ data/ docs/ || echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push updated predictions
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/prediction_2026.json data/scrape_cache.json docs/prediction_2026.json
+          git commit -m "chore: update draft predictions [automated]"
+          git push
