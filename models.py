@@ -35,6 +35,8 @@ class DraftPick:
     position: str = ""
     school: str = ""
     consensus_score: float = 0.0
+    team: str = ""
+    team_name: str = ""
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -69,23 +71,28 @@ class DraftBoard:
 
     def print_board(self):
         """Print a formatted draft board to terminal."""
-        print("\n" + "=" * 75)
-        print(f"{'NBA DRAFT BOARD':^75}")
-        print(f"{'Generated: ' + self.generated_at:^75}")
-        print("=" * 75)
+        print("\n" + "=" * 90)
+        print(f"{'NBA DRAFT BOARD':^90}")
+        print(f"{'Generated: ' + self.generated_at:^90}")
+        print("=" * 90)
         print(
-            f"{'Pick':<6}{'Player':<25}{'Pos':<6}{'School/Team':<25}{'Score':<10}"
+            f"{'Pick':<6}{'Team':<5}{'TeamName':<14}{'Player':<22}{'Pos':<6}{'School/Team':<22}{'Score':<10}"
         )
-        print("-" * 75)
+        print("-" * 90)
         for pick in self.picks:
+            team = pick.team if pick.team else "--"
+            # Extract short team name (e.g. "Wizards" from "Washington Wizards")
+            team_short = pick.team_name.split()[-1] if pick.team_name else "--"
             print(
                 f"{pick.pick_number:<6}"
-                f"{pick.player_name:<25}"
+                f"{team:<5}"
+                f"{team_short:<14}"
+                f"{pick.player_name:<22}"
                 f"{pick.position:<6}"
-                f"{pick.school:<25}"
+                f"{pick.school:<22}"
                 f"{pick.consensus_score:<10.3f}"
             )
-        print("=" * 75)
+        print("=" * 90)
         print(f"Sources: {', '.join(self.sources_used)}")
         print()
 

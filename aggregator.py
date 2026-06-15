@@ -1,7 +1,9 @@
 """Weighted Consensus Aggregation Engine for NBA Draft predictions."""
 
+import json
 import math
 import logging
+import os
 from datetime import datetime
 from typing import List, Dict, Tuple
 from collections import defaultdict
@@ -10,6 +12,22 @@ from models import PlayerPrediction, DraftBoard, DraftPick
 from config import SOURCE_WEIGHTS, TIME_DECAY_LAMBDA, CURRENT_DATE, TOP_PICKS
 
 logger = logging.getLogger(__name__)
+
+# Path to NBA teams data file
+NBA_TEAMS_FILE = os.path.join(os.path.dirname(__file__), "data", "nba_teams.json")
+
+
+def load_nba_teams() -> Dict[str, Dict]:
+    """Load NBA teams mapping from data file.
+
+    Returns dict mapping team abbreviation to {name, espn_slug}.
+    """
+    try:
+        with open(NBA_TEAMS_FILE, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.warning(f"Could not load NBA teams data: {e}")
+        return {}
 
 
 def normalize_name(name: str) -> str:
@@ -128,7 +146,10 @@ def calculate_time_decay(date_str: str) -> float:
         return 0.5
 
 
-def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
+def aggregate_predictions(
+    predictions: List[PlayerPrediction],
+    team_order: Dict[int, str] = None,
+) -> DraftBoard:
     """Aggregate predictions from multiple sources into a consensus draft board.
 
     Algorithm:
@@ -136,11 +157,15 @@ def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
     2. For each player, calculate weighted consensus pick position:
        weighted_pick = sum(pick * source_weight * time_decay * confidence) / sum(weights)
     3. Sort by consensus pick position
-    4. Return top N picks as DraftBoard
+    4. Assign NBA teams based on team_order (pick_number -> team abbreviation)
+    5. Return top N picks as DraftBoard
     """
     if not predictions:
         logger.warning("No predictions to aggregate")
         return DraftBoard(mode="predict")
+
+    # Load NBA team metadata
+    nba_teams = load_nba_teams()
 
     # Group predictions by normalized player name
     player_groups: Dict[str, List[PlayerPrediction]] = defaultdict(list)
@@ -218,6 +243,15 @@ def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
 
     for i, (key, consensus_pick, score) in enumerate(consensus[:TOP_PICKS], start=1):
         info = player_info.get(key, {})
+
+        # Determine team for this pick position
+        team_abbr = ""
+        team_name = ""
+        if team_order and i in team_order:
+            team_abbr = team_order[i]
+            team_data = nba_teams.get(team_abbr, {})
+            team_name = team_data.get("name", "")
+
         board.add_pick(
             DraftPick(
                 pick_number=i,
@@ -225,6 +259,8 @@ def aggregate_predictions(predictions: List[PlayerPrediction]) -> DraftBoard:
                 position=info.get("position", ""),
                 school=info.get("school", ""),
                 consensus_score=round(score, 4),
+                team=team_abbr,
+                team_name=team_name,
             )
         )
 

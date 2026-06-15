@@ -1,0 +1,122 @@
+{
+  "WAS": {
+    "name": "Washington Wizards",
+    "espn_slug": "wsh"
+  },
+  "UTA": {
+    "name": "Utah Jazz",
+    "espn_slug": "utah"
+  },
+  "MEM": {
+    "name": "Memphis Grizzlies",
+    "espn_slug": "mem"
+  },
+  "CHI": {
+    "name": "Chicago Bulls",
+    "espn_slug": "chi"
+  },
+  "LAC": {
+    "name": "LA Clippers",
+    "espn_slug": "lac"
+  },
+  "BKN": {
+    "name": "Brooklyn Nets",
+    "espn_slug": "bkn"
+  },
+  "SAC": {
+    "name": "Sacramento Kings",
+    "espn_slug": "sac"
+  },
+  "ATL": {
+    "name": "Atlanta Hawks",
+    "espn_slug": "atl"
+  },
+  "DAL": {
+    "name": "Dallas Mavericks",
+    "espn_slug": "dal"
+  },
+  "MIL": {
+    "name": "Milwaukee Bucks",
+    "espn_slug": "mil"
+  },
+  "GS": {
+    "name": "Golden State Warriors",
+    "espn_slug": "gs"
+  },
+  "OKC": {
+    "name": "Oklahoma City Thunder",
+    "espn_slug": "okc"
+  },
+  "MIA": {
+    "name": "Miami Heat",
+    "espn_slug": "mia"
+  },
+  "CHA": {
+    "name": "Charlotte Hornets",
+    "espn_slug": "cha"
+  },
+  "TOR": {
+    "name": "Toronto Raptors",
+    "espn_slug": "tor"
+  },
+  "SA": {
+    "name": "San Antonio Spurs",
+    "espn_slug": "sa"
+  },
+  "DET": {
+    "name": "Detroit Pistons",
+    "espn_slug": "det"
+  },
+  "PHI": {
+    "name": "Philadelphia 76ers",
+    "espn_slug": "phi"
+  },
+  "NY": {
+    "name": "New York Knicks",
+    "espn_slug": "ny"
+  },
+  "LAL": {
+    "name": "Los Angeles Lakers",
+    "espn_slug": "lal"
+  },
+  "DEN": {
+    "name": "Denver Nuggets",
+    "espn_slug": "den"
+  },
+  "BOS": {
+    "name": "Boston Celtics",
+    "espn_slug": "bos"
+  },
+  "MIN": {
+    "name": "Minnesota Timberwolves",
+    "espn_slug": "min"
+  },
+  "CLE": {
+    "name": "Cleveland Cavaliers",
+    "espn_slug": "cle"
+  },
+  "HOU": {
+    "name": "Houston Rockets",
+    "espn_slug": "hou"
+  },
+  "IND": {
+    "name": "Indiana Pacers",
+    "espn_slug": "ind"
+  },
+  "NO": {
+    "name": "New Orleans Pelicans",
+    "espn_slug": "no"
+  },
+  "ORL": {
+    "name": "Orlando Magic",
+    "espn_slug": "orl"
+  },
+  "POR": {
+    "name": "Portland Trail Blazers",
+    "espn_slug": "por"
+  },
+  "PHX": {
+    "name": "Phoenix Suns",
+    "espn_slug": "phx"
+  }
+}

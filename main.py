@@ -16,6 +16,7 @@ from models import DraftBoard
 from aggregator import aggregate_predictions
 from backtest import run_backtest
 from scrapers import scrape_all_sources, load_cached_predictions
+from scrapers.tankathon import get_team_order
 
 # Configure logging
 logging.basicConfig(
@@ -50,9 +51,17 @@ def run_predict():
 
     print(f"\nTotal predictions collected: {len(predictions)}")
 
+    # Get team draft order from Tankathon
+    print("Fetching team draft order...")
+    team_order = get_team_order()
+    if team_order:
+        print(f"Team draft order: {len(team_order)} picks mapped")
+    else:
+        print("Could not fetch team draft order (will proceed without team info)")
+
     # Aggregate
     print("Running weighted consensus aggregation...")
-    board = aggregate_predictions(predictions)
+    board = aggregate_predictions(predictions, team_order=team_order)
     board.mode = "predict_2026"
 
     # Output

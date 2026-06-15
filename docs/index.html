@@ -129,7 +129,7 @@
 
         .pick-card {
             display: grid;
-            grid-template-columns: 60px 45px 1fr auto;
+            grid-template-columns: 60px 45px 1fr 45px auto;
             align-items: center;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -223,6 +223,46 @@
             font-weight: 700;
             color: var(--text-secondary);
             text-transform: uppercase;
+        }
+
+        .nba-team-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--card-border);
+            display: block;
+        }
+
+        .nba-team-logo-placeholder {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d1b69, #1a1a2e);
+            border: 2px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .team-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+            min-width: 45px;
+        }
+
+        .team-abbr {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
         }
 
         .consensus-score {
@@ -326,7 +366,7 @@
             }
 
             .pick-card {
-                grid-template-columns: 45px 36px 1fr;
+                grid-template-columns: 45px 36px 1fr 36px;
                 gap: 0.5rem;
                 padding: 0.75rem 1rem;
             }
@@ -336,6 +376,13 @@
                 width: 36px;
                 height: 36px;
                 font-size: 0.8rem;
+            }
+
+            .nba-team-logo,
+            .nba-team-logo-placeholder {
+                width: 36px;
+                height: 36px;
+                font-size: 0.6rem;
             }
 
             .consensus-score {
@@ -354,6 +401,10 @@
 
             .score-bar {
                 margin-left: 0;
+            }
+
+            .team-abbr {
+                font-size: 0.6rem;
             }
         }
     </style>
@@ -400,7 +451,7 @@
 
     <script>
         // Prediction data - auto-updated by CI pipeline
-        const PREDICTION_DATA = {"generated_at":"2026-06-08T11:33:37.771170","mode":"predict_2026","sources_used":["betting_odds","nbadraft_net","tankathon"],"picks":[{"pick_number":1,"player_name":"AJ Dybantsa","position":"SF","school":"BYU Cougars","consensus_score":0.6719},{"pick_number":2,"player_name":"Darryn Peterson","position":"SG/PG","school":"Kansas Jayhawks","consensus_score":0.5386},{"pick_number":3,"player_name":"Cameron Boozer","position":"PF","school":"Duke Blue Devils","consensus_score":0.4894},{"pick_number":4,"player_name":"Caleb Wilson","position":"SF/PF","school":"UNC Tar Heels","consensus_score":0.4858},{"pick_number":5,"player_name":"Darius Acuff Jr.","position":"PG","school":"Arkansas Razorbacks","consensus_score":0.4858},{"pick_number":6,"player_name":"Keaton Wagler","position":"SG/PG","school":"Illinois Fighting Illini","consensus_score":0.4858},{"pick_number":7,"player_name":"Kingston Flemings","position":"PG","school":"Houston Cougars","consensus_score":0.4858},{"pick_number":8,"player_name":"Mikel Brown Jr.","position":"PG","school":"Louisville Cardinals","consensus_score":0.4858},{"pick_number":9,"player_name":"Nate Ament","position":"SF","school":"Tennessee Volunteers","consensus_score":0.4858},{"pick_number":10,"player_name":"Brayden Burries","position":"SG/PG","school":"Arizona","consensus_score":0.6813},{"pick_number":11,"player_name":"Yaxel Lendeborg","position":"PF","school":"Michigan Wolverines","consensus_score":0.4858},{"pick_number":12,"player_name":"Labaron Philon Jr.","position":"PG","school":"Alabama","consensus_score":0.6813},{"pick_number":13,"player_name":"Karim Lopez","position":"SF","school":"New Zealand","consensus_score":0.6813},{"pick_number":14,"player_name":"Aday Mara","position":"C","school":"Michigan","consensus_score":0.6813},{"pick_number":15,"player_name":"Hannes Steinbach","position":"PF","school":"Washington","consensus_score":0.6813},{"pick_number":16,"player_name":"Cameron Carr","position":"SG","school":"Baylor","consensus_score":0.6813},{"pick_number":17,"player_name":"Chris Cenac Jr.","position":"PF/C","school":"Houston","consensus_score":0.6813},{"pick_number":18,"player_name":"Jayden Quaintance","position":"PF/C","school":"Kentucky Wildcats","consensus_score":0.4858},{"pick_number":19,"player_name":"Bennett Stirtz","position":"PG","school":"Iowa","consensus_score":0.6813},{"pick_number":20,"player_name":"Allen Graves","position":"PF","school":"Santa Clara","consensus_score":0.6813},{"pick_number":21,"player_name":"Dailyn Swain","position":"SG/SF","school":"Texas","consensus_score":0.6813},{"pick_number":22,"player_name":"Morez Johnson Jr.","position":"PF","school":"Michigan","consensus_score":0.6813},{"pick_number":23,"player_name":"Isaiah Evans","position":"SF","school":"Duke","consensus_score":0.6813},{"pick_number":24,"player_name":"Meleek Thomas","position":"SG/PG","school":"Arkansas","consensus_score":0.6813},{"pick_number":25,"player_name":"Christian Anderson","position":"PG","school":"Texas Tech","consensus_score":0.6813},{"pick_number":26,"player_name":"Luigi Suigo","position":"C","school":"Italy","consensus_score":0.64},{"pick_number":27,"player_name":"Koa Peat","position":"PF","school":"Arizona Wildcats","consensus_score":0.4858},{"pick_number":28,"player_name":"Ebuka Okorie","position":"PG","school":"Stanford","consensus_score":0.6813},{"pick_number":29,"player_name":"Henri Veesaar","position":"C","school":"North Carolina","consensus_score":0.6813},{"pick_number":30,"player_name":"Joshua Jefferson","position":"PF/SF","school":"Iowa State","consensus_score":0.6813}]};
+        const PREDICTION_DATA = {"generated_at":"2026-06-15T06:44:15.121249","mode":"predict_2026","sources_used":["betting_odds","nbadraft_net","tankathon"],"picks":[{"pick_number":1,"player_name":"AJ Dybantsa","position":"SF","school":"BYU Cougars","consensus_score":0.6719,"team":"WAS","team_name":"Washington Wizards"},{"pick_number":2,"player_name":"Darryn Peterson","position":"SG/PG","school":"Kansas Jayhawks","consensus_score":0.5386,"team":"UTA","team_name":"Utah Jazz"},{"pick_number":3,"player_name":"Cameron Boozer","position":"PF","school":"Duke Blue Devils","consensus_score":0.4894,"team":"MEM","team_name":"Memphis Grizzlies"},{"pick_number":4,"player_name":"Caleb Wilson","position":"SF/PF","school":"UNC Tar Heels","consensus_score":0.4858,"team":"CHI","team_name":"Chicago Bulls"},{"pick_number":5,"player_name":"Darius Acuff Jr.","position":"PG","school":"Arkansas Razorbacks","consensus_score":0.4858,"team":"LAC","team_name":"LA Clippers"},{"pick_number":6,"player_name":"Keaton Wagler","position":"SG/PG","school":"Illinois Fighting Illini","consensus_score":0.4858,"team":"BKN","team_name":"Brooklyn Nets"},{"pick_number":7,"player_name":"Mikel Brown Jr.","position":"PG","school":"Louisville Cardinals","consensus_score":0.4858,"team":"SAC","team_name":"Sacramento Kings"},{"pick_number":8,"player_name":"Kingston Flemings","position":"PG","school":"Houston Cougars","consensus_score":0.4858,"team":"ATL","team_name":"Atlanta Hawks"},{"pick_number":9,"player_name":"Brayden Burries","position":"SG/PG","school":"Arizona","consensus_score":0.6813,"team":"DAL","team_name":"Dallas Mavericks"},{"pick_number":10,"player_name":"Nate Ament","position":"SF","school":"Tennessee Volunteers","consensus_score":0.4858,"team":"MIL","team_name":"Milwaukee Bucks"},{"pick_number":11,"player_name":"Yaxel Lendeborg","position":"PF","school":"Michigan Wolverines","consensus_score":0.4858,"team":"GS","team_name":"Golden State Warriors"},{"pick_number":12,"player_name":"Aday Mara","position":"C","school":"Michigan","consensus_score":0.6813,"team":"OKC","team_name":"Oklahoma City Thunder"},{"pick_number":13,"player_name":"Labaron Philon Jr.","position":"PG","school":"Alabama","consensus_score":0.6813,"team":"MIA","team_name":"Miami Heat"},{"pick_number":14,"player_name":"Cameron Carr","position":"SG","school":"Baylor","consensus_score":0.6813,"team":"CHA","team_name":"Charlotte Hornets"},{"pick_number":15,"player_name":"Hannes Steinbach","position":"PF","school":"Washington","consensus_score":0.6813,"team":"CHI","team_name":"Chicago Bulls"},{"pick_number":16,"player_name":"Karim Lopez","position":"SF","school":"New Zealand","consensus_score":0.6813,"team":"MEM","team_name":"Memphis Grizzlies"},{"pick_number":17,"player_name":"Dailyn Swain","position":"SG/SF","school":"Texas","consensus_score":0.7225,"team":"OKC","team_name":"Oklahoma City Thunder"},{"pick_number":18,"player_name":"Chris Cenac Jr.","position":"PF/C","school":"Houston","consensus_score":0.6813,"team":"CHA","team_name":"Charlotte Hornets"},{"pick_number":19,"player_name":"Jayden Quaintance","position":"PF/C","school":"Kentucky Wildcats","consensus_score":0.4858,"team":"TOR","team_name":"Toronto Raptors"},{"pick_number":20,"player_name":"Allen Graves","position":"PF","school":"Santa Clara","consensus_score":0.6813,"team":"SA","team_name":"San Antonio Spurs"},{"pick_number":21,"player_name":"Morez Johnson Jr.","position":"PF","school":"Michigan","consensus_score":0.6813,"team":"DET","team_name":"Detroit Pistons"},{"pick_number":22,"player_name":"Bennett Stirtz","position":"PG","school":"Iowa","consensus_score":0.6813,"team":"PHI","team_name":"Philadelphia 76ers"},{"pick_number":23,"player_name":"Isaiah Evans","position":"SF","school":"Duke","consensus_score":0.6813,"team":"ATL","team_name":"Atlanta Hawks"},{"pick_number":24,"player_name":"Christian Anderson","position":"PG","school":"Texas Tech","consensus_score":0.6813,"team":"NY","team_name":"New York Knicks"},{"pick_number":25,"player_name":"Meleek Thomas","position":"SG/PG","school":"Arkansas","consensus_score":0.6813,"team":"LAL","team_name":"Los Angeles Lakers"},{"pick_number":26,"player_name":"Luigi Suigo","position":"C","school":"Italy","consensus_score":0.64,"team":"DEN","team_name":"Denver Nuggets"},{"pick_number":27,"player_name":"Jack Kayil","position":"PG","school":"Germany","consensus_score":0.64,"team":"BOS","team_name":"Boston Celtics"},{"pick_number":28,"player_name":"Koa Peat","position":"PF","school":"Arizona Wildcats","consensus_score":0.4858,"team":"MIN","team_name":"Minnesota Timberwolves"},{"pick_number":29,"player_name":"Ebuka Okorie","position":"PG","school":"Stanford","consensus_score":0.6813,"team":"CLE","team_name":"Cleveland Cavaliers"},{"pick_number":30,"player_name":"Henri Veesaar","position":"C","school":"North Carolina","consensus_score":0.6813,"team":"DAL","team_name":"Dallas Mavericks"}]};
 
         // School name to ESPN team ID mapping
         const SCHOOL_ESPN_IDS = {
@@ -432,6 +483,40 @@
             'Iowa State': 66,
             'Duke': 150,
             'UConn': 41
+        };
+
+        // NBA team abbreviation to ESPN slug mapping
+        const NBA_TEAM_SLUGS = {
+            'WAS': 'wsh',
+            'UTA': 'utah',
+            'MEM': 'mem',
+            'CHI': 'chi',
+            'LAC': 'lac',
+            'BKN': 'bkn',
+            'SAC': 'sac',
+            'ATL': 'atl',
+            'DAL': 'dal',
+            'MIL': 'mil',
+            'GS': 'gs',
+            'OKC': 'okc',
+            'MIA': 'mia',
+            'CHA': 'cha',
+            'TOR': 'tor',
+            'SA': 'sa',
+            'DET': 'det',
+            'PHI': 'phi',
+            'NY': 'ny',
+            'LAL': 'lal',
+            'DEN': 'den',
+            'BOS': 'bos',
+            'MIN': 'min',
+            'CLE': 'cle',
+            'HOU': 'hou',
+            'IND': 'ind',
+            'NO': 'no',
+            'ORL': 'orl',
+            'POR': 'por',
+            'PHX': 'phx'
         };
 
         function getSchoolLogoUrl(school) {
@@ -470,6 +555,49 @@
                 placeholder.textContent = getSchoolInitials(school);
                 return placeholder;
             }
+        }
+
+        function getNbaTeamLogoUrl(teamAbbr) {
+            const slug = NBA_TEAM_SLUGS[teamAbbr];
+            if (slug) {
+                return `https://a.espncdn.com/i/teamlogos/nba/500/${slug}.png`;
+            }
+            return null;
+        }
+
+        function createNbaTeamLogoElement(teamAbbr, teamName) {
+            const container = document.createElement('div');
+            container.className = 'team-info';
+
+            const logoUrl = getNbaTeamLogoUrl(teamAbbr);
+            if (logoUrl) {
+                const img = document.createElement('img');
+                img.className = 'nba-team-logo';
+                img.src = logoUrl;
+                img.alt = (teamName || teamAbbr) + ' logo';
+                img.loading = 'lazy';
+                img.onerror = function() {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'nba-team-logo-placeholder';
+                    placeholder.textContent = teamAbbr || '?';
+                    this.parentNode.replaceChild(placeholder, this);
+                };
+                container.appendChild(img);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'nba-team-logo-placeholder';
+                placeholder.textContent = teamAbbr || '?';
+                container.appendChild(placeholder);
+            }
+
+            if (teamAbbr) {
+                const label = document.createElement('span');
+                label.className = 'team-abbr';
+                label.textContent = teamAbbr;
+                container.appendChild(label);
+            }
+
+            return container;
         }
 
         function formatDate(isoString) {
@@ -520,18 +648,22 @@
                 if (isTop3) cardClass += ' top-3';
                 else if (isLottery) cardClass += ' lottery';
 
+                const teamName = pick.team_name || '';
+                const teamShort = teamName ? teamName.split(' ').pop() : '';
+
                 const card = document.createElement('div');
                 card.className = cardClass;
                 card.innerHTML = `
                     <div class="pick-number">${pick.pick_number}</div>
-                    <div class="school-logo-container"></div>
+                    <div class="nba-team-logo-container"></div>
                     <div class="player-info">
-                        <div class="player-name">${pick.player_name}</div>
+                        <div class="player-name">${pick.player_name}${teamShort ? ' <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">&rarr; ' + teamShort + '</span>' : ''}</div>
                         <div class="player-details">
                             <span class="position">${pick.position}</span>
                             ${pick.school}
                         </div>
                     </div>
+                    <div class="school-logo-container"></div>
                     <div class="consensus-score ${scoreClass}">
                         <div class="score-value">${scorePercent}%</div>
                         <div class="score-label">Consensus</div>
@@ -540,8 +672,12 @@
                         </div>
                     </div>
                 `;
-                const logoContainer = card.querySelector('.school-logo-container');
-                logoContainer.replaceWith(createLogoElement(pick.school));
+                // Insert NBA team logo
+                const nbaLogoContainer = card.querySelector('.nba-team-logo-container');
+                nbaLogoContainer.replaceWith(createNbaTeamLogoElement(pick.team || '', pick.team_name || ''));
+                // Insert school logo
+                const schoolLogoContainer = card.querySelector('.school-logo-container');
+                schoolLogoContainer.replaceWith(createLogoElement(pick.school));
                 board.appendChild(card);
             });
         }
