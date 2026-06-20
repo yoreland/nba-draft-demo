@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T11:33:37.771170",
+  "generated_at": "2026-06-20T01:03:15.822657",
   "mode": "predict_2026",
   "sources_used": [
     "betting_odds",
@@ -9,213 +9,273 @@
   "picks": [
     {
       "pick_number": 1,
-      "player_name": "AJ Dybantsa",
-      "position": "SF",
-      "school": "BYU Cougars",
-      "consensus_score": 0.6719
-    },
-    {
-      "pick_number": 2,
       "player_name": "Darryn Peterson",
       "position": "SG/PG",
       "school": "Kansas Jayhawks",
-      "consensus_score": 0.5386
+      "consensus_score": 0.5386,
+      "team": "WAS",
+      "team_name": "Washington Wizards"
+    },
+    {
+      "pick_number": 2,
+      "player_name": "AJ Dybantsa",
+      "position": "SF",
+      "school": "BYU Cougars",
+      "consensus_score": 0.6719,
+      "team": "UTA",
+      "team_name": "Utah Jazz"
     },
     {
       "pick_number": 3,
       "player_name": "Cameron Boozer",
       "position": "PF",
       "school": "Duke Blue Devils",
-      "consensus_score": 0.4894
+      "consensus_score": 0.4894,
+      "team": "MEM",
+      "team_name": "Memphis Grizzlies"
     },
     {
       "pick_number": 4,
       "player_name": "Caleb Wilson",
       "position": "SF/PF",
       "school": "UNC Tar Heels",
-      "consensus_score": 0.4858
+      "consensus_score": 0.4858,
+      "team": "CHI",
+      "team_name": "Chicago Bulls"
     },
     {
       "pick_number": 5,
-      "player_name": "Darius Acuff Jr.",
-      "position": "PG",
-      "school": "Arkansas Razorbacks",
-      "consensus_score": 0.4858
-    },
-    {
-      "pick_number": 6,
       "player_name": "Keaton Wagler",
       "position": "SG/PG",
       "school": "Illinois Fighting Illini",
-      "consensus_score": 0.4858
+      "consensus_score": 0.4858,
+      "team": "LAC",
+      "team_name": "LA Clippers"
+    },
+    {
+      "pick_number": 6,
+      "player_name": "Darius Acuff Jr.",
+      "position": "PG",
+      "school": "Arkansas Razorbacks",
+      "consensus_score": 0.4858,
+      "team": "BKN",
+      "team_name": "Brooklyn Nets"
     },
     {
       "pick_number": 7,
-      "player_name": "Kingston Flemings",
-      "position": "PG",
-      "school": "Houston Cougars",
-      "consensus_score": 0.4858
-    },
-    {
-      "pick_number": 8,
       "player_name": "Mikel Brown Jr.",
       "position": "PG",
       "school": "Louisville Cardinals",
-      "consensus_score": 0.4858
+      "consensus_score": 0.4858,
+      "team": "SAC",
+      "team_name": "Sacramento Kings"
+    },
+    {
+      "pick_number": 8,
+      "player_name": "Kingston Flemings",
+      "position": "PG",
+      "school": "Houston Cougars",
+      "consensus_score": 0.4858,
+      "team": "ATL",
+      "team_name": "Atlanta Hawks"
     },
     {
       "pick_number": 9,
-      "player_name": "Nate Ament",
-      "position": "SF",
-      "school": "Tennessee Volunteers",
-      "consensus_score": 0.4858
-    },
-    {
-      "pick_number": 10,
       "player_name": "Brayden Burries",
       "position": "SG/PG",
       "school": "Arizona",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "DAL",
+      "team_name": "Dallas Mavericks"
+    },
+    {
+      "pick_number": 10,
+      "player_name": "Nate Ament",
+      "position": "SF",
+      "school": "Tennessee Volunteers",
+      "consensus_score": 0.4858,
+      "team": "MIL",
+      "team_name": "Milwaukee Bucks"
     },
     {
       "pick_number": 11,
-      "player_name": "Yaxel Lendeborg",
-      "position": "PF",
-      "school": "Michigan Wolverines",
-      "consensus_score": 0.4858
+      "player_name": "Aday Mara",
+      "position": "C",
+      "school": "Michigan",
+      "consensus_score": 0.6813,
+      "team": "GS",
+      "team_name": "Golden State Warriors"
     },
     {
       "pick_number": 12,
-      "player_name": "Labaron Philon Jr.",
-      "position": "PG",
-      "school": "Alabama",
-      "consensus_score": 0.6813
+      "player_name": "Yaxel Lendeborg",
+      "position": "PF",
+      "school": "Michigan Wolverines",
+      "consensus_score": 0.4858,
+      "team": "OKC",
+      "team_name": "Oklahoma City Thunder"
     },
     {
       "pick_number": 13,
       "player_name": "Karim Lopez",
       "position": "SF",
       "school": "New Zealand",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "MIA",
+      "team_name": "Miami Heat"
     },
     {
       "pick_number": 14,
-      "player_name": "Aday Mara",
-      "position": "C",
-      "school": "Michigan",
-      "consensus_score": 0.6813
+      "player_name": "Labaron Philon Jr.",
+      "position": "PG",
+      "school": "Alabama",
+      "consensus_score": 0.6813,
+      "team": "CHA",
+      "team_name": "Charlotte Hornets"
     },
     {
       "pick_number": 15,
-      "player_name": "Hannes Steinbach",
-      "position": "PF",
-      "school": "Washington",
-      "consensus_score": 0.6813
+      "player_name": "Morez Johnson Jr.",
+      "position": "PF/C",
+      "school": "Michigan",
+      "consensus_score": 0.6813,
+      "team": "CHI",
+      "team_name": "Chicago Bulls"
     },
     {
       "pick_number": 16,
-      "player_name": "Cameron Carr",
-      "position": "SG",
-      "school": "Baylor",
-      "consensus_score": 0.6813
+      "player_name": "Hannes Steinbach",
+      "position": "PF",
+      "school": "Washington",
+      "consensus_score": 0.6813,
+      "team": "MEM",
+      "team_name": "Memphis Grizzlies"
     },
     {
       "pick_number": 17,
-      "player_name": "Chris Cenac Jr.",
-      "position": "PF/C",
-      "school": "Houston",
-      "consensus_score": 0.6813
+      "player_name": "Cameron Carr",
+      "position": "SG",
+      "school": "Baylor",
+      "consensus_score": 0.6813,
+      "team": "OKC",
+      "team_name": "Oklahoma City Thunder"
     },
     {
       "pick_number": 18,
-      "player_name": "Jayden Quaintance",
-      "position": "PF/C",
-      "school": "Kentucky Wildcats",
-      "consensus_score": 0.4858
-    },
-    {
-      "pick_number": 19,
       "player_name": "Bennett Stirtz",
       "position": "PG",
       "school": "Iowa",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "CHA",
+      "team_name": "Charlotte Hornets"
     },
     {
-      "pick_number": 20,
-      "player_name": "Allen Graves",
-      "position": "PF",
-      "school": "Santa Clara",
-      "consensus_score": 0.6813
-    },
-    {
-      "pick_number": 21,
-      "player_name": "Dailyn Swain",
-      "position": "SG/SF",
-      "school": "Texas",
-      "consensus_score": 0.6813
-    },
-    {
-      "pick_number": 22,
-      "player_name": "Morez Johnson Jr.",
-      "position": "PF",
-      "school": "Michigan",
-      "consensus_score": 0.6813
-    },
-    {
-      "pick_number": 23,
-      "player_name": "Isaiah Evans",
-      "position": "SF",
-      "school": "Duke",
-      "consensus_score": 0.6813
-    },
-    {
-      "pick_number": 24,
-      "player_name": "Meleek Thomas",
-      "position": "SG/PG",
-      "school": "Arkansas",
-      "consensus_score": 0.6813
-    },
-    {
-      "pick_number": 25,
+      "pick_number": 19,
       "player_name": "Christian Anderson",
       "position": "PG",
       "school": "Texas Tech",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "TOR",
+      "team_name": "Toronto Raptors"
+    },
+    {
+      "pick_number": 20,
+      "player_name": "Chris Cenac Jr.",
+      "position": "PF/C",
+      "school": "Houston",
+      "consensus_score": 0.6813,
+      "team": "SA",
+      "team_name": "San Antonio Spurs"
+    },
+    {
+      "pick_number": 21,
+      "player_name": "Allen Graves",
+      "position": "PF",
+      "school": "Santa Clara",
+      "consensus_score": 0.6813,
+      "team": "DET",
+      "team_name": "Detroit Pistons"
+    },
+    {
+      "pick_number": 22,
+      "player_name": "Isaiah Evans",
+      "position": "SF",
+      "school": "Duke",
+      "consensus_score": 0.6813,
+      "team": "PHI",
+      "team_name": "Philadelphia 76ers"
+    },
+    {
+      "pick_number": 23,
+      "player_name": "Dailyn Swain",
+      "position": "SG/SF",
+      "school": "Texas",
+      "consensus_score": 0.6813,
+      "team": "ATL",
+      "team_name": "Atlanta Hawks"
+    },
+    {
+      "pick_number": 24,
+      "player_name": "Jayden Quaintance",
+      "position": "PF/C",
+      "school": "Kentucky Wildcats",
+      "consensus_score": 0.4858,
+      "team": "NY",
+      "team_name": "New York Knicks"
+    },
+    {
+      "pick_number": 25,
+      "player_name": "Meleek Thomas",
+      "position": "PG/SG",
+      "school": "Arkansas",
+      "consensus_score": 0.64,
+      "team": "LAL",
+      "team_name": "Los Angeles Lakers"
     },
     {
       "pick_number": 26,
-      "player_name": "Luigi Suigo",
-      "position": "C",
-      "school": "Italy",
-      "consensus_score": 0.64
-    },
-    {
-      "pick_number": 27,
-      "player_name": "Koa Peat",
-      "position": "PF",
-      "school": "Arizona Wildcats",
-      "consensus_score": 0.4858
-    },
-    {
-      "pick_number": 28,
       "player_name": "Ebuka Okorie",
       "position": "PG",
       "school": "Stanford",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "DEN",
+      "team_name": "Denver Nuggets"
     },
     {
-      "pick_number": 29,
+      "pick_number": 27,
+      "player_name": "Baba Miller",
+      "position": "PF/C",
+      "school": "Cincinnati",
+      "consensus_score": 0.64,
+      "team": "BOS",
+      "team_name": "Boston Celtics"
+    },
+    {
+      "pick_number": 28,
       "player_name": "Henri Veesaar",
       "position": "C",
       "school": "North Carolina",
-      "consensus_score": 0.6813
+      "consensus_score": 0.6813,
+      "team": "MIN",
+      "team_name": "Minnesota Timberwolves"
+    },
+    {
+      "pick_number": 29,
+      "player_name": "Koa Peat",
+      "position": "PF",
+      "school": "Arizona Wildcats",
+      "consensus_score": 0.4858,
+      "team": "CLE",
+      "team_name": "Cleveland Cavaliers"
     },
     {
       "pick_number": 30,
-      "player_name": "Joshua Jefferson",
-      "position": "PF/SF",
-      "school": "Iowa State",
-      "consensus_score": 0.6813
+      "player_name": "Sergio De Larrea",
+      "position": "PG/SG",
+      "school": "Valencia",
+      "consensus_score": 0.6813,
+      "team": "DAL",
+      "team_name": "Dallas Mavericks"
     }
   ]
 }

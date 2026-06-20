@@ -16,6 +16,11 @@ logger = logging.getLogger(__name__)
 # Path to NBA teams data file
 NBA_TEAMS_FILE = os.path.join(os.path.dirname(__file__), "data", "nba_teams.json")
 
+# Path to manual news overrides file
+MANUAL_OVERRIDES_FILE = os.path.join(
+    os.path.dirname(__file__), "data", "manual_overrides.json"
+)
+
 
 def load_nba_teams() -> Dict[str, Dict]:
     """Load NBA teams mapping from data file.
@@ -28,6 +33,118 @@ def load_nba_teams() -> Dict[str, Dict]:
     except (FileNotFoundError, json.JSONDecodeError) as e:
         logger.warning(f"Could not load NBA teams data: {e}")
         return {}
+
+
+def load_manual_overrides(path: str = MANUAL_OVERRIDES_FILE) -> List[Dict]:
+    """Load the persistent manual news overrides.
+
+    Returns the list of override entries. Each entry has at minimum
+    ``player_name`` and ``force_pick``; ``reason`` and ``date`` are optional.
+    Missing or malformed files yield an empty list (overrides are optional).
+    """
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+        return data.get("overrides", [])
+    except FileNotFoundError:
+        return []
+    except (json.JSONDecodeError, AttributeError) as e:
+        logger.warning(f"Could not load manual overrides: {e}")
+        return []
+
+
+def apply_manual_overrides(
+    board: DraftBoard,
+    team_order: Dict[int, str] = None,
+    overrides: List[Dict] = None,
+) -> List[Dict]:
+    """Apply manual news overrides to a consensus draft board, in place.
+
+    For each override the named player is forced to the ``force_pick`` slot
+    (matched fuzzily against the board). All other players keep their relative
+    consensus order and fill the remaining slots. After reordering, pick numbers
+    are re-sequenced and team assignments are re-mapped to follow the new slots
+    (team allocation follows the pick position, not the player).
+
+    Returns the list of overrides that were actually applied, in pick order, so
+    callers can report what changed.
+    """
+    if overrides is None:
+        overrides = load_manual_overrides()
+    if not overrides or not board.picks:
+        return []
+
+    picks = list(board.picks)
+    n = len(picks)
+
+    # Resolve each override to a concrete pick via fuzzy name matching.
+    forced: Dict[int, Tuple[DraftPick, Dict]] = {}  # force_pick (1-based) -> (pick, override)
+    used_ids = set()
+    for ov in overrides:
+        name = ov.get("player_name")
+        force_pick = ov.get("force_pick")
+        if not name or not force_pick:
+            continue
+        if not (1 <= force_pick <= n):
+            logger.warning(
+                f"Manual override for '{name}' has out-of-range force_pick "
+                f"{force_pick} (board has {n} picks); skipping."
+            )
+            continue
+        if force_pick in forced:
+            logger.warning(
+                f"Manual override force_pick {force_pick} already assigned; "
+                f"skipping duplicate for '{name}'."
+            )
+            continue
+
+        match = None
+        for p in picks:
+            if id(p) in used_ids:
+                continue
+            if fuzzy_match(p.player_name, name):
+                match = p
+                break
+        if match is None:
+            logger.warning(
+                f"Manual override player '{name}' not found on the board; skipping."
+            )
+            continue
+
+        forced[force_pick] = (match, ov)
+        used_ids.add(id(match))
+
+    if not forced:
+        return []
+
+    # Players not pinned by an override keep their original consensus order.
+    remaining = [p for p in picks if id(p) not in used_ids]
+
+    new_order: List[DraftPick] = [None] * n
+    for force_pick, (pick, _ov) in forced.items():
+        new_order[force_pick - 1] = pick
+    fill = iter(remaining)
+    for i in range(n):
+        if new_order[i] is None:
+            new_order[i] = next(fill)
+
+    # Re-sequence pick numbers and re-map teams to follow the new slots.
+    nba_teams = load_nba_teams()
+    for idx, pick in enumerate(new_order, start=1):
+        pick.pick_number = idx
+        team_abbr = ""
+        team_name = ""
+        if team_order and idx in team_order:
+            team_abbr = team_order[idx]
+            team_name = nba_teams.get(team_abbr, {}).get("name", "")
+        pick.team = team_abbr
+        pick.team_name = team_name
+
+    board.picks = new_order
+
+    # Report applied overrides in final pick order.
+    applied = [ov for _fp, (_pick, ov) in sorted(forced.items())]
+    return applied
 
 
 def normalize_name(name: str) -> str:

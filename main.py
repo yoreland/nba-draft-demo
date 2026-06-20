@@ -13,7 +13,7 @@ import sys
 
 from config import OUTPUT_DIR
 from models import DraftBoard
-from aggregator import aggregate_predictions
+from aggregator import aggregate_predictions, apply_manual_overrides
 from backtest import run_backtest
 from scrapers import scrape_all_sources, load_cached_predictions
 from scrapers.tankathon import get_team_order
@@ -63,6 +63,20 @@ def run_predict():
     print("Running weighted consensus aggregation...")
     board = aggregate_predictions(predictions, team_order=team_order)
     board.mode = "predict_2026"
+
+    # Apply persistent manual news overrides (e.g. ESPN/reporter scoops that the
+    # scrapers cannot reach). These are re-applied on every run so they survive
+    # automated scrapes.
+    applied_overrides = apply_manual_overrides(board, team_order=team_order)
+    if applied_overrides:
+        print("\n" + "=" * 75)
+        print(" MANUAL NEWS OVERRIDES APPLIED")
+        print("=" * 75)
+        for ov in applied_overrides:
+            print(f"  #{ov['force_pick']} -> {ov['player_name']}")
+            reason = ov.get("reason", "")
+            if reason:
+                print(f"     Reason: {reason}")
 
     # Output
     board.print_board()

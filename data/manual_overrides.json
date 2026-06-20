@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "player_name": "Darryn Peterson",
+      "force_pick": 1,
+      "reason": "Stein报道+ESPN Jeremy Woo最终版模拟选秀(2026-06-20)：奇才正认真考虑用状元签选彼得森，彼得森反超迪班萨登顶",
+      "date": "2026-06-20"
+    },
+    {
+      "player_name": "AJ Dybantsa",
+      "force_pick": 2,
+      "reason": "Woo最终版：若奇才选彼得森，爵士榜眼摘迪班萨",
+      "date": "2026-06-20"
+    }
+  ]
+}

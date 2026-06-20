@@ -7,8 +7,9 @@ from aggregator import (
     fuzzy_match,
     calculate_time_decay,
     aggregate_predictions,
+    apply_manual_overrides,
 )
-from models import PlayerPrediction
+from models import PlayerPrediction, DraftBoard, DraftPick
 
 
 def test_normalize_name_basic():
@@ -127,3 +128,71 @@ def test_aggregate_name_normalization():
     board = aggregate_predictions(predictions)
     # Should be merged into one player
     assert len(board.picks) == 1
+
+
+def _board_with_picks(names):
+    """Build a simple DraftBoard from an ordered list of player names."""
+    board = DraftBoard(mode="predict")
+    for i, name in enumerate(names, start=1):
+        board.add_pick(DraftPick(pick_number=i, player_name=name))
+    return board
+
+
+def test_apply_manual_overrides_reorders():
+    """Forced players move to their slots; others keep relative order."""
+    board = _board_with_picks(["AJ Dybantsa", "Darryn Peterson", "Cameron Boozer", "Caleb Wilson"])
+    overrides = [
+        {"player_name": "Darryn Peterson", "force_pick": 1, "reason": "news"},
+        {"player_name": "AJ Dybantsa", "force_pick": 2, "reason": "news"},
+    ]
+    applied = apply_manual_overrides(board, overrides=overrides)
+    assert len(applied) == 2
+    assert [p.player_name for p in board.picks] == [
+        "Darryn Peterson",
+        "AJ Dybantsa",
+        "Cameron Boozer",
+        "Caleb Wilson",
+    ]
+    # Pick numbers re-sequenced
+    assert [p.pick_number for p in board.picks] == [1, 2, 3, 4]
+
+
+def test_apply_manual_overrides_team_follows_slot():
+    """Team assignment follows the pick slot, not the player."""
+    board = _board_with_picks(["AJ Dybantsa", "Darryn Peterson", "Cameron Boozer"])
+    board.picks[0].team = "WAS"
+    board.picks[1].team = "UTA"
+    team_order = {1: "WAS", 2: "UTA", 3: "MEM"}
+    overrides = [{"player_name": "Darryn Peterson", "force_pick": 1}]
+    apply_manual_overrides(board, team_order=team_order, overrides=overrides)
+    # Slot 1 is still WAS, now holding Peterson; AJ falls to slot 2 (UTA)
+    assert board.picks[0].player_name == "Darryn Peterson"
+    assert board.picks[0].team == "WAS"
+    assert board.picks[1].player_name == "AJ Dybantsa"
+    assert board.picks[1].team == "UTA"
+
+
+def test_apply_manual_overrides_fuzzy_match():
+    """Override names match fuzzily (case/suffix differences)."""
+    board = _board_with_picks(["AJ Dybantsa", "Darryn Peterson"])
+    overrides = [{"player_name": "darryn  peterson", "force_pick": 1}]
+    applied = apply_manual_overrides(board, overrides=overrides)
+    assert len(applied) == 1
+    assert board.picks[0].player_name == "Darryn Peterson"
+
+
+def test_apply_manual_overrides_missing_player_skipped():
+    """Overrides for players not on the board are skipped, not fatal."""
+    board = _board_with_picks(["AJ Dybantsa", "Darryn Peterson"])
+    overrides = [{"player_name": "Nonexistent Player", "force_pick": 1}]
+    applied = apply_manual_overrides(board, overrides=overrides)
+    assert applied == []
+    assert [p.player_name for p in board.picks] == ["AJ Dybantsa", "Darryn Peterson"]
+
+
+def test_apply_manual_overrides_no_overrides():
+    """Empty override list leaves the board untouched."""
+    board = _board_with_picks(["AJ Dybantsa", "Darryn Peterson"])
+    applied = apply_manual_overrides(board, overrides=[])
+    assert applied == []
+    assert [p.player_name for p in board.picks] == ["AJ Dybantsa", "Darryn Peterson"]
