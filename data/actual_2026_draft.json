@@ -1,0 +1,216 @@
+{
+  "picks": [
+    {
+      "pick": 1,
+      "player": "AJ Dybantsa",
+      "pos": "SF",
+      "team": "Washington Wizards",
+      "school": "BYU(Fr.)"
+    },
+    {
+      "pick": 2,
+      "player": "Darryn Peterson",
+      "pos": "SG/PG",
+      "team": "Utah Jazz",
+      "school": "Kansas(Fr.)"
+    },
+    {
+      "pick": 3,
+      "player": "Cameron Boozer",
+      "pos": "PF",
+      "team": "Memphis Grizzlies",
+      "school": "Duke(Fr.)"
+    },
+    {
+      "pick": 4,
+      "player": "Caleb Wilson",
+      "pos": "SF/PF",
+      "team": "Chicago Bulls",
+      "school": "North Carolina(Fr.)"
+    },
+    {
+      "pick": 5,
+      "player": "Keaton Wagler",
+      "pos": "SG/PG",
+      "team": "Los Angeles Clippers(from Indiana)[A]",
+      "school": "Illinois(Fr.)"
+    },
+    {
+      "pick": 6,
+      "player": "Mikel Brown Jr.",
+      "pos": "PG",
+      "team": "Brooklyn Nets",
+      "school": "Louisville(Fr.)"
+    },
+    {
+      "pick": 7,
+      "player": "Darius Acuff Jr.",
+      "pos": "PG",
+      "team": "Sacramento Kings",
+      "school": "Arkansas(Fr.)"
+    },
+    {
+      "pick": 8,
+      "player": "Kingston Flemings",
+      "pos": "PG",
+      "team": "Atlanta Hawks(from New Orleans)[B]",
+      "school": "Houston(Fr.)"
+    },
+    {
+      "pick": 9,
+      "player": "Morez Johnson Jr.",
+      "pos": "PF/C",
+      "team": "Dallas Mavericks",
+      "school": "Michigan(So.)"
+    },
+    {
+      "pick": 10,
+      "player": "Brayden Burries",
+      "pos": "SG/PG",
+      "team": "Milwaukee Bucks",
+      "school": "Arizona(Fr.)"
+    },
+    {
+      "pick": 11,
+      "player": "Yaxel Lendeborg",
+      "pos": "PF",
+      "team": "Golden State Warriors",
+      "school": "Michigan(Sr.)"
+    },
+    {
+      "pick": 12,
+      "player": "Aday Mara",
+      "pos": "C",
+      "team": "Oklahoma City Thunder(from L.A. Clippers)[C]",
+      "school": "Michigan(Jr.)"
+    },
+    {
+      "pick": 13,
+      "player": "Nate Ament",
+      "pos": "SF",
+      "team": "Miami Heat(traded to Milwaukee)",
+      "school": "Tennessee(Fr.)"
+    },
+    {
+      "pick": 14,
+      "player": "Hannes Steinbach",
+      "pos": "PF",
+      "team": "Charlotte Hornets",
+      "school": "Washington(Fr.)"
+    },
+    {
+      "pick": 15,
+      "player": "Dailyn Swain",
+      "pos": "SG/SF",
+      "team": "Chicago Bulls(from Portland)[D]",
+      "school": "Texas(Jr.)"
+    },
+    {
+      "pick": 16,
+      "player": "Bennett Stirtz",
+      "pos": "PG",
+      "team": "Memphis Grizzlies(from Phoenix via Orlando)[E]",
+      "school": "IowaSr.)"
+    },
+    {
+      "pick": 17,
+      "player": "Ebuka Okorie",
+      "pos": "PG",
+      "team": "Oklahoma City Thunder(from Philadelphia)[F]",
+      "school": "Stanford(Fr.)"
+    },
+    {
+      "pick": 18,
+      "player": "Christian Anderson",
+      "pos": "G",
+      "team": "Charlotte Hornets(from Orlando via Phoenix)[E][G]",
+      "school": "Texas Tech(So.)"
+    },
+    {
+      "pick": 19,
+      "player": "Allen Graves",
+      "pos": "F",
+      "team": "Toronto Raptors",
+      "school": "Santa Clara(Fr.)"
+    },
+    {
+      "pick": 20,
+      "player": "Jayden Quaintance",
+      "pos": "F/C",
+      "team": "San Antonio Spurs(from Atlanta)[H]",
+      "school": "Kentucky(So.)"
+    },
+    {
+      "pick": 21,
+      "player": "Karim López",
+      "pos": "F",
+      "team": "Detroit Pistons(from Minnesota)[I]",
+      "school": "New Zealand Breakers(New Zealand)"
+    },
+    {
+      "pick": 22,
+      "player": "Labaron Philon Jr.",
+      "pos": "G",
+      "team": "Philadelphia 76ers(from Houston via Oklahoma City)[J]",
+      "school": "Alabama(So.)"
+    },
+    {
+      "pick": 23,
+      "player": "Zuby Ejiofor",
+      "pos": "F/C",
+      "team": "Atlanta Hawks(from Cleveland)[K]",
+      "school": "St. John's(Sr.)"
+    },
+    {
+      "pick": 24,
+      "player": "Cameron Carr",
+      "pos": "G",
+      "team": "New York Knicks",
+      "school": "Baylor(Jr.)"
+    },
+    {
+      "pick": 25,
+      "player": "Sergio de Larrea",
+      "pos": "F",
+      "team": "Los Angeles Lakers",
+      "school": "Valencia(Spain)"
+    },
+    {
+      "pick": 26,
+      "player": "Tarris Reed",
+      "pos": "C",
+      "team": "Denver Nuggets",
+      "school": "UConn(Sr.)"
+    },
+    {
+      "pick": 27,
+      "player": "Chris Cenac Jr.",
+      "pos": "F",
+      "team": "Boston Celtics",
+      "school": "Houston(Fr.)"
+    },
+    {
+      "pick": 28,
+      "player": "Joshua Jefferson",
+      "pos": "F",
+      "team": "Minnesota Timberwolves(from Detroit)[I]",
+      "school": "Iowa State(Sr.)"
+    },
+    {
+      "pick": 29,
+      "player": "Alex Karaban",
+      "pos": "F",
+      "team": "Cleveland Cavaliers(from San Antonio via Atlanta)[H][K]",
+      "school": "UConn(Sr.)"
+    },
+    {
+      "pick": 30,
+      "player": "Koa Peat",
+      "pos": "F",
+      "team": "Dallas Mavericks(from Oklahoma City via Washington and Philadelphia)[L]",
+      "school": "Arizona(Fr.)"
+    }
+  ],
+  "source": "wikipedia",
+  "scraped_at": "2026-06-26"
+}
