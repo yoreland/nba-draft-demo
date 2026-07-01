@@ -2,8 +2,8 @@ name: Update Draft Predictions
 
 on:
   schedule:
-    # Run every Monday and Thursday at 08:00 UTC (twice per week)
-    - cron: '0 8 * * 1,4'
+    # Run every day at 08:00 UTC
+    - cron: '0 8 * * *'
   workflow_dispatch:
     # Allow manual trigger from GitHub Actions UI
 
